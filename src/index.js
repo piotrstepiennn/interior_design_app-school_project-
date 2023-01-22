@@ -1,7 +1,8 @@
 import * as BABYLON from "babylonjs";
 import "babylonjs-loaders";
 import { parameters } from "./parameters";
-import { SceneBuilder } from "./sceneBuilder";
+import { SceneBuilder, prepareWalls } from "./sceneBuilder";
+import { RoomDesignGUI } from "./gui";
 
 window.addEventListener("DOMContentLoaded", function () {
   parameters.canvas = document.getElementById("canvas");
@@ -12,7 +13,9 @@ window.addEventListener("DOMContentLoaded", function () {
     SceneBuilder.setLights();
     SceneBuilder.prepareGround();
     SceneBuilder.prepareCamera();
-    SceneBuilder.prepareWalls();
+    prepareWalls();
+
+    parameters.gui = new RoomDesignGUI();
 
     return parameters.scene;
   };

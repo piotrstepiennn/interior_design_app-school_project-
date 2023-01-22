@@ -97,72 +97,72 @@ export class SceneBuilder {
     parameters.camera = camera;
   };
 
-  static prepareWalls = () => {
-    let wallMaterial = new BABYLON.StandardMaterial(
-      "wallMaterial",
+  static createWall = (name, material, position) => {
+    let wallWidth =
+      position == "NORTH" || position == "SOUTH"
+        ? parameters.groundWidth
+        : parameters.groundHeigth;
+    console.log(wallWidth);
+    let wall = new BABYLON.MeshBuilder.CreatePlane(
+      name,
+      { height: parameters.wallSize, width: wallWidth },
       parameters.scene
     );
-    wallMaterial.specularColor = new BABYLON.Color3.Black();
-    wallMaterial.diffuseTexture = new BABYLON.Texture(
-      "./textures/wall.jpg",
-      parameters.scene
-    );
-    parameters.wallMaterial = wallMaterial;
+    wall.material = material;
+    wall.isPickable = false;
+    switch (position) {
+      case "NORTH":
+        wall.position = new BABYLON.Vector3(
+          0,
+          parameters.wallSize / 2,
+          parameters.groundHeigth / 2
+        );
+        break;
 
-    parameters.walls.push(createWall("wall", wallMaterial, "NORTH"));
-    parameters.walls.push(createWall("wall", wallMaterial, "WEST"));
-    parameters.walls.push(createWall("wall", wallMaterial, "EAST"));
+      case "SOUTH":
+        wall.position = new BABYLON.Vector3(
+          0,
+          parameters.wallSize / 2,
+          -parameters.groundHeigth / 2
+        );
+        wall.rotation.y = BABYLON.Tools.ToRadians(180);
+        break;
+
+      case "WEST":
+        wall.position = new BABYLON.Vector3(
+          parameters.groundWidth / 2,
+          parameters.wallSize / 2,
+          0
+        );
+        wall.rotation.y = BABYLON.Tools.ToRadians(90);
+        break;
+
+      case "EAST":
+        wall.position = new BABYLON.Vector3(
+          -parameters.groundWidth / 2,
+          parameters.wallSize / 2,
+          0
+        );
+        wall.rotation.y = BABYLON.Tools.ToRadians(-90);
+        break;
+    }
+    return wall;
   };
 }
 
-const createWall = (name, material, position) => {
-  let wallWidth =
-    position == "NORTH" || position == "SOUTH"
-      ? parameters.groundWidth
-      : parameters.groundHeigth;
-  console.log(wallWidth);
-  let wall = new BABYLON.MeshBuilder.CreatePlane(
-    name,
-    { height: parameters.wallSize, width: wallWidth },
+export const prepareWalls = () => {
+  let wallMaterial = new BABYLON.StandardMaterial(
+    "wallMaterial",
     parameters.scene
   );
-  wall.material = material;
-  wall.isPickable = false;
-  switch (position) {
-    case "NORTH":
-      wall.position = new BABYLON.Vector3(
-        0,
-        parameters.wallSize / 2,
-        parameters.groundHeigth / 2
-      );
-      break;
+  wallMaterial.specularColor = new BABYLON.Color3.Black();
+  wallMaterial.diffuseTexture = new BABYLON.Texture(
+    "./textures/wall.jpg",
+    parameters.scene
+  );
+  parameters.wallMaterial = wallMaterial;
 
-    case "SOUTH":
-      wall.position = new BABYLON.Vector3(
-        0,
-        parameters.wallSize / 2,
-        -parameters.groundHeigth / 2
-      );
-      wall.rotation.y = BABYLON.Tools.ToRadians(180);
-      break;
-
-    case "WEST":
-      wall.position = new BABYLON.Vector3(
-        parameters.groundWidth / 2,
-        parameters.wallSize / 2,
-        0
-      );
-      wall.rotation.y = BABYLON.Tools.ToRadians(90);
-      break;
-
-    case "EAST":
-      wall.position = new BABYLON.Vector3(
-        -parameters.groundWidth / 2,
-        parameters.wallSize / 2,
-        0
-      );
-      wall.rotation.y = BABYLON.Tools.ToRadians(-90);
-      break;
-  }
-  return wall;
+  parameters.walls.push(SceneBuilder.createWall("wall", wallMaterial, "NORTH"));
+  parameters.walls.push(SceneBuilder.createWall("wall", wallMaterial, "WEST"));
+  parameters.walls.push(SceneBuilder.createWall("wall", wallMaterial, "EAST"));
 };
