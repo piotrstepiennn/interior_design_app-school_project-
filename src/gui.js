@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import * as GUI from "babylonjs-gui";
 import { parameters } from "./parameters.js";
 import { SceneBuilder } from "./sceneBuilder";
+import { Tools } from "./tools";
 
 export class RoomDesignGUI {
   constructor() {
@@ -230,11 +231,11 @@ export class RoomDesignGUI {
 
     // menu glowne dla produktow = obiektow
     this.createProductMenu = () => {
+      console.log(parameters.pickedMesh);
       this.contentPanel.clearControls();
       this.createHeader("Produkty");
       // zawartość menu
 
-      // Produkty
       function marginBox(height) {
         let rect = new GUI.Rectangle("marginBox");
         rect.height = height;
@@ -274,8 +275,7 @@ export class RoomDesignGUI {
                   selectedProduct.push(product);
                 }
               });
-              console.log(selectedProduct);
-              this.buildproductList(selectedProduct, productList, button.name);
+              this.buildProductList(selectedProduct, productList, button.name);
             });
             productList.addControl(button);
           });
@@ -294,7 +294,7 @@ export class RoomDesignGUI {
               selectedProduct.push(product);
             }
           });
-          this.buildproductList(
+          this.buildProductList(
             selectedProduct,
             productList,
             "Wyniki wyszukiwania"
@@ -321,7 +321,7 @@ export class RoomDesignGUI {
               selectedProduct.push(product);
             }
           });
-          this.buildproductList(selectedProduct, productList, button.name);
+          this.buildProductList(selectedProduct, productList, button.name);
         });
         productList.addControl(button);
       });

@@ -9,6 +9,20 @@ export class SceneBuilder {
     parameters.scene.clearColor = new BABYLON.Color3(1, 1, 1);
   };
 
+  static preCreatePickedMesh = function () {
+    parameters.pickedMesh = new BABYLON.Mesh.CreateBox(
+      "box",
+      1,
+      parameters.scene
+    );
+    parameters.pickedMesh.material = new BABYLON.StandardMaterial(
+      "",
+      parameters.scene
+    );
+    parameters.pickedMesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+    parameters.pickedMesh.dispose();
+  };
+
   static setLights = function () {
     parameters.lights = [];
     // LIGHT

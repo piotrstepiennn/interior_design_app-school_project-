@@ -72,14 +72,14 @@ export class FurnitureGUI {
     stackFurnitureSettings.addControl(stackFurnitureDimensions);
     stackFurnitureSettings.addControl(marginBox("10px"));
 
-    let labelRoomDimensions = new GUI.TextBlock(
-      "labelRoomDimensions",
+    let labelFurnitureDimensions = new GUI.TextBlock(
+      "labelFurnitureDimensions",
       "Wymiary:"
     );
-    labelRoomDimensions.fontSize = "12px";
-    labelRoomDimensions.color = "black";
-    labelRoomDimensions.resizeToFit = true;
-    stackFurnitureDimensions.addControl(labelRoomDimensions);
+    labelFurnitureDimensions.fontSize = "12px";
+    labelFurnitureDimensions.color = "black";
+    labelFurnitureDimensions.resizeToFit = true;
+    stackFurnitureDimensions.addControl(labelFurnitureDimensions);
 
     let groundWidthInput = new GUI.InputText(
       "groundWidthInput",
@@ -108,13 +108,13 @@ export class FurnitureGUI {
     stackFurnitureDimensions.addControl(groundHeigthInput);
 
     let furnitureScheme = new GUI.StackPanel("furnitureScheme");
-    furnitureScheme.height = "250px";
+    furnitureScheme.height = "300px";
     furnitureScheme.isVertical = true;
     stackFurnitureSettings.addControl(furnitureScheme);
     stackFurnitureSettings.addControl(marginBox("10px"));
 
     let labelFurnitureScheme = new GUI.TextBlock(
-      "labelRoomDimensions",
+      "labelFurnitureScheme",
       "Typ mebla:"
     );
     labelFurnitureScheme.fontSize = "12px";
@@ -165,6 +165,25 @@ export class FurnitureGUI {
       selectedColor.copyFrom(value);
     });
 
+    let labelFurnitureName = new GUI.TextBlock(
+      "labelFurnitureDimensions",
+      "Nazwa pliku:"
+    );
+    labelFurnitureName.fontSize = "12px";
+    labelFurnitureName.color = "black";
+    labelFurnitureName.resizeToFit = true;
+    furnitureScheme.addControl(labelFurnitureName);
+
+    let furnitureNameInput = new GUI.InputText("furnitureNameInput");
+    furnitureNameInput.width = "80px";
+    furnitureNameInput.height = "18px";
+    furnitureNameInput.color = "white";
+    furnitureNameInput.fontSize = "12px";
+    furnitureNameInput.paddingLeft = "5px";
+    furnitureNameInput.paddingRight = "5px";
+    furnitureNameInput.onFocusSelectAll = true;
+    furnitureScheme.addControl(furnitureNameInput);
+
     let buttonSetRoom = new GUI.Button.CreateSimpleButton(
       "buttonSetFurnitureSize",
       "Zapisz"
@@ -203,12 +222,6 @@ export class FurnitureGUI {
 
       closeButton.onPointerDownObservable.add(() => {
         furnitureContentPanel.width = "0px";
-        panelButtons.map((btn) => (btn.background = "#33334C"));
-        if (parameters.highlightedMesh) {
-          parameters.highlightedMesh.material.emissiveColor =
-            new BABYLON.Color3.Black();
-          parameters.highlightedMesh = null;
-        }
       });
       header.addControl(headerText);
       header.addControl(closeButton);
