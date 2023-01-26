@@ -7,6 +7,7 @@ import { MeshGenerator } from "./meshGenerator";
 export class FurnitureGUI {
   constructor() {
     this.createNewFurniture();
+    this.serializeScene();
   }
 
   //tworzenie menu glownego
@@ -266,5 +267,63 @@ export class FurnitureGUI {
       header.addControl(closeButton);
       furnitureContentPanel.addControl(header);
     }
+  };
+
+  serializeScene = function () {
+    let advancedTexture2 =
+      GUI.AdvancedDynamicTexture.CreateFullscreenUI("MyUI1");
+    let container = new GUI.StackPanel();
+    container.background = "transparent";
+    container.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    container.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
+    container.height = "40%";
+    container.width = "410px";
+    advancedTexture2.addControl(container);
+
+    let labelSceneName = new GUI.TextBlock("labelSceneName", "Nazwa pliku:");
+    labelSceneName.fontSize = "12px";
+    labelSceneName.color = "black";
+    labelSceneName.resizeToFit = true;
+    container.addControl(labelSceneName);
+
+    let sceneNameInput = new GUI.InputText("sceneNameInput", "scene");
+    sceneNameInput.width = "100px";
+    sceneNameInput.height = "25px";
+    sceneNameInput.color = "white";
+    sceneNameInput.fontSize = "12px";
+    sceneNameInput.paddingLeft = "5px";
+    sceneNameInput.paddingRight = "5px";
+    sceneNameInput.onFocusSelectAll = true;
+    container.addControl(sceneNameInput);
+
+    let buttonSaveScene = new GUI.Button.CreateSimpleButton(
+      "buttonSetScene",
+      "Zapisz Scene"
+    );
+    buttonSaveScene.width = "100px";
+    buttonSaveScene.height = "50px";
+    buttonSaveScene.paddingLeft = "5px";
+    buttonSaveScene.color = "Black";
+    // buttonSaveFurniture.paddingRight = "5px"
+    buttonSaveScene.fontSize = "12px";
+    buttonSaveScene.onPointerDownObservable.add(() => {
+      var serializedSceneJson = JSON.stringify(
+        BABYLON.SceneSerializer.Serialize(parameters.scene)
+      );
+
+      var obj = JSON.parse(serializedSceneJson);
+      var jsonStr = JSON.stringify(obj);
+      console.log(jsonStr);
+      const blob = new Blob([jsonStr], { type: "octet/stream" });
+      // turn blob into an object URL; saved as a member, so can be cleaned out later
+      const objectUrl = (window.webkitURL || window.URL).createObjectURL(blob);
+      const link = window.document.createElement("a");
+      link.href = objectUrl;
+      link.download = sceneNameInput.text + ".json";
+      const click = document.createEvent("MouseEvents");
+      click.initEvent("click", true, false);
+      link.dispatchEvent(click);
+    });
+    container.addControl(buttonSaveScene);
   };
 }

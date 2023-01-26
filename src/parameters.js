@@ -29,6 +29,6 @@ export const parameters = {
   wallSize: 3000,
   originHeight: 0.0,
   originAlpha: 0.0,
-  Categories: ["Szafka Dolna", "Szafka Górna", "AGD"],
+  categories: ["Szafka Dolna", "Szafka Górna", "AGD"],
   selectedCategory: ["Szafka Dolna"],
 };
