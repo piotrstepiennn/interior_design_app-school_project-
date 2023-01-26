@@ -1,5 +1,8 @@
 import * as BABYLON from "babylonjs";
 import { MeshGenerator } from "./meshGenerator";
+const fs = require("fs");
+import path from "path";
+//import mesh1 from "../serializedData/test1.json" assert { type: "json" };
 
 export const createProductList = function () {
   // BLUE BOX CONFIG
@@ -82,3 +85,12 @@ export const createProductList = function () {
 
   return products;
 };
+
+function getJsons() {
+  let testFolder = "../serializedData/";
+  fs.readdir(testFolder, (err, files) => {
+    files.forEach((file) => {
+      console.log(file);
+    });
+  });
+}

@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import * as GUI from "babylonjs-gui";
 import { parameters } from "./parameters.js";
 import { SceneBuilder } from "./sceneBuilder";
+import { MeshGenerator } from "./meshGenerator";
 
 export class FurnitureGUI {
   constructor() {
@@ -81,31 +82,35 @@ export class FurnitureGUI {
     labelFurnitureDimensions.resizeToFit = true;
     stackFurnitureDimensions.addControl(labelFurnitureDimensions);
 
-    let groundWidthInput = new GUI.InputText(
-      "groundWidthInput",
-      parameters.groundWidth / 1000
-    );
-    groundWidthInput.width = "40px";
-    groundWidthInput.height = "18px";
-    groundWidthInput.color = "white";
-    groundWidthInput.fontSize = "12px";
-    groundWidthInput.paddingLeft = "5px";
-    groundWidthInput.paddingRight = "5px";
-    groundWidthInput.onFocusSelectAll = true;
-    stackFurnitureDimensions.addControl(groundWidthInput);
+    let furnitureWidthInput = new GUI.InputText("furnitureWidthInput", 1);
+    furnitureWidthInput.width = "40px";
+    furnitureWidthInput.height = "18px";
+    furnitureWidthInput.color = "white";
+    furnitureWidthInput.fontSize = "12px";
+    furnitureWidthInput.paddingLeft = "5px";
+    furnitureWidthInput.paddingRight = "5px";
+    furnitureWidthInput.onFocusSelectAll = true;
+    stackFurnitureDimensions.addControl(furnitureWidthInput);
 
-    let groundHeigthInput = new GUI.InputText(
-      "groundHeigthInput",
-      parameters.groundHeigth / 1000
-    );
-    groundHeigthInput.width = "40px";
-    groundHeigthInput.height = "18px";
-    groundHeigthInput.color = "white";
-    groundHeigthInput.fontSize = "12px";
-    groundHeigthInput.paddingLeft = "5px";
-    groundHeigthInput.paddingRight = "5px";
-    groundHeigthInput.onFocusSelectAll = true;
-    stackFurnitureDimensions.addControl(groundHeigthInput);
+    let furnitureHeightInput = new GUI.InputText("furnitureHeightInput", 1);
+    furnitureHeightInput.width = "40px";
+    furnitureHeightInput.height = "18px";
+    furnitureHeightInput.color = "white";
+    furnitureHeightInput.fontSize = "12px";
+    furnitureHeightInput.paddingLeft = "5px";
+    furnitureHeightInput.paddingRight = "5px";
+    furnitureHeightInput.onFocusSelectAll = true;
+    stackFurnitureDimensions.addControl(furnitureHeightInput);
+
+    let furnitureDepthInput = new GUI.InputText("furnitureDepthInput", 1);
+    furnitureDepthInput.width = "40px";
+    furnitureDepthInput.height = "18px";
+    furnitureDepthInput.color = "white";
+    furnitureDepthInput.fontSize = "12px";
+    furnitureDepthInput.paddingLeft = "5px";
+    furnitureDepthInput.paddingRight = "5px";
+    furnitureDepthInput.onFocusSelectAll = true;
+    stackFurnitureDimensions.addControl(furnitureDepthInput);
 
     let furnitureScheme = new GUI.StackPanel("furnitureScheme");
     furnitureScheme.height = "300px";
@@ -133,7 +138,7 @@ export class FurnitureGUI {
       button.onIsCheckedChangedObservable.add(function (state) {
         if (state) {
           console.log(text);
-          parameters.categories = furnitureType;
+          parameters.selectedCategory = furnitureType;
         }
       });
 
@@ -184,22 +189,56 @@ export class FurnitureGUI {
     furnitureNameInput.onFocusSelectAll = true;
     furnitureScheme.addControl(furnitureNameInput);
 
-    let buttonSetRoom = new GUI.Button.CreateSimpleButton(
+    let buttonSaveFurniture = new GUI.Button.CreateSimpleButton(
       "buttonSetFurnitureSize",
       "Zapisz"
     );
-    buttonSetRoom.width = "65px";
-    buttonSetRoom.height = "18px";
-    buttonSetRoom.paddingLeft = "5px";
-    buttonSetRoom.color = "Black";
-    // buttonSetRoom.paddingRight = "5px"
-    buttonSetRoom.fontSize = "12px";
-    buttonSetRoom.onPointerDownObservable.add(() => {
+    buttonSaveFurniture.width = "65px";
+    buttonSaveFurniture.height = "18px";
+    buttonSaveFurniture.paddingLeft = "5px";
+    buttonSaveFurniture.color = "Black";
+    // buttonSaveFurniture.paddingRight = "5px"
+    buttonSaveFurniture.fontSize = "12px";
+    buttonSaveFurniture.onPointerDownObservable.add(() => {
+      console.log("savefurniture");
       // TODO:
       // crate mesh based on user configuration by gui and
       // save it to .json and make it load in products menu as draggable furniture
+
+      let mesh = MeshGenerator.createTestBox(
+        furnitureNameInput.text,
+        {
+          height: furnitureHeightInput.text,
+          depth: furnitureDepthInput.text,
+          width: furnitureWidthInput.text,
+        },
+        {
+          specularColor: new BABYLON.Color3.Black(),
+          diffuseColor: selectedColor,
+        }
+      );
+
+      var serializedMeshJson = JSON.stringify(
+        BABYLON.SceneSerializer.SerializeMesh(mesh)
+      );
+      mesh.dispose();
+
+      var obj = JSON.parse(serializedMeshJson);
+      console.log(obj);
+      obj["selectedCategory"] = parameters.selectedCategory;
+      var jsonStr = JSON.stringify(obj);
+      console.log(jsonStr);
+      const blob = new Blob([jsonStr], { type: "octet/stream" });
+      // turn blob into an object URL; saved as a member, so can be cleaned out later
+      const objectUrl = (window.webkitURL || window.URL).createObjectURL(blob);
+      const link = window.document.createElement("a");
+      link.href = objectUrl;
+      link.download = furnitureNameInput.text + ".json";
+      const click = document.createEvent("MouseEvents");
+      click.initEvent("click", true, false);
+      link.dispatchEvent(click);
     });
-    furnitureScheme.addControl(buttonSetRoom);
+    furnitureScheme.addControl(buttonSaveFurniture);
     function createHeader(headerName) {
       let header = new GUI.StackPanel("header");
       header.background = "#303030";

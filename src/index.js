@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", function () {
     parameters.products = createProductList();
 
     parameters.scene.registerBeforeRender(() => {
-      // Polishing the highlit mesh
+      // Polishing the highlited mesh
       if (parameters.highlightedMesh) {
         parameters.placedMeshes.map((object) => {
           if (parameters.highlightedMesh == object) {

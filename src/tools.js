@@ -290,7 +290,7 @@ export class Tools {
                 parameters.highlightedMesh.actionManager == null
                   ? new BABYLON.ActionManager(parameters.scene)
                   : parameters.highlightedMesh.actionManager;
-              // Taşıma sağ tıklama ile
+              // Move by right click
               parameters.highlightedMesh.actionManager.registerAction(
                 new BABYLON.ExecuteCodeAction(
                   BABYLON.ActionManager.OnRightPickTrigger,

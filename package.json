@@ -27,7 +27,14 @@
     "babylonjs-loaders": "^4.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "fs": "^0.0.1-security",
     "jquery": "^3.5.1",
+    "path": "^0.12.7",
     "socket.io": "^2.3.0"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
   }
 }
