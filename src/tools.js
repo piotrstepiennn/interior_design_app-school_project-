@@ -308,7 +308,7 @@ export class Tools {
                 )
               );
               parameters.gui.contentPanel.width = "350px";
-              parameters.gui.createBilgilerMenu(parameters.highlightedMesh);
+              parameters.gui.createProductInfoMenu(parameters.highlightedMesh);
             }
           }
         )
