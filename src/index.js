@@ -4,7 +4,7 @@ import { parameters } from "./parameters";
 import { SceneBuilder, prepareWalls } from "./sceneBuilder";
 import { RoomDesignGUI } from "./gui";
 import { FurnitureGUI } from "./furnitureGUI";
-import { createProductList } from "./models";
+//import { createProductList } from "./models";
 import { MeshGenerator } from "./meshGenerator";
 import { Tools } from "./tools";
 
@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", function () {
     //Cursor Pointer
     let origin = MeshGenerator.createPointer();
 
-    parameters.products = createProductList();
+    //parameters.products = createProductList();
 
     parameters.scene.registerBeforeRender(() => {
       // Polishing the highlited mesh

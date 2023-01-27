@@ -1,8 +1,9 @@
 import * as BABYLON from "babylonjs";
 import { MeshGenerator } from "./meshGenerator";
-const fs = require("fs");
-import path from "path";
-//import mesh1 from "../serializedData/test1.json" assert { type: "json" };
+import * as BABYLONloader from "babylonjs-loaders";
+import { parameters } from "./parameters";
+
+//import * as mesh1 from "../serializedData/test1.json" assert { type: "json" };
 
 export const createProductList = function () {
   // BLUE BOX CONFIG
@@ -53,6 +54,15 @@ export const createProductList = function () {
   );
   purpleBox.dispose();
 
+  let loadMesh1 = BABYLON.SceneLoader.ImportMeshAsync(
+    "mesh1",
+    "http://localhost:8080/serializedData/",
+    "test1.json"
+  );
+
+  //let test = JSON.stringify(loadMesh1);
+  console.log(loadMesh1);
+
   let products = [
     {
       name: "przykładowa szafka dolna",
@@ -85,12 +95,3 @@ export const createProductList = function () {
 
   return products;
 };
-
-function getJsons() {
-  let testFolder = "../serializedData/";
-  fs.readdir(testFolder, (err, files) => {
-    files.forEach((file) => {
-      console.log(file);
-    });
-  });
-}

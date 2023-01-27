@@ -3,7 +3,7 @@ import * as GUI from "babylonjs-gui";
 import { parameters } from "./parameters.js";
 import { SceneBuilder } from "./sceneBuilder";
 import { Tools } from "./tools";
-
+import { createProductList } from "./models";
 export class RoomDesignGUI {
   constructor() {
     this.advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -231,7 +231,7 @@ export class RoomDesignGUI {
 
     // menu glowne dla produktow = obiektow
     this.createProductMenu = () => {
-      console.log(parameters.pickedMesh);
+      parameters.products = createProductList();
       this.contentPanel.clearControls();
       this.createHeader("Produkty");
       // zawartość menu
